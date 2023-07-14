@@ -30,7 +30,7 @@ const App = () => {
       <Button label="Neutral" modify={() => handlerNeutral(neutral)} />
       <Button label="Bad" modify={() => handlerBad(bad)} />
       <Header title="Statistics" />
-      <Statistics label="test" good={good} bad={bad} neutral={neutral} />
+      <Statistics good={good} bad={bad} neutral={neutral} />
     </div>
   );
 };
