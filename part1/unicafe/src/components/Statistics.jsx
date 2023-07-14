@@ -1,39 +1,29 @@
+import StatisticsLine from "./StatisticsLine";
+
 const Statistics = ({ good, bad, neutral }) => {
   const add = (acc, a) => {
     return acc + a;
   };
   const total = [good, neutral, bad].reduce(add, 0);
-  const positive = (good / total) * 100;
-  const average = total / 3;
+  const positive = Math.round((good / total) * 100) + "%";
+  const average = Math.round((total / 3) * 100) / 100;
 
   if (total === 0) {
     return <h3>No feedback given</h3>;
   } else {
     return (
       <div>
-        <div>
-          <b>good</b> {good}
-        </div>
-        <div>
-          <b>neutral</b> {neutral}
-        </div>
-        <div>
-          <b>bad</b> {bad}
-        </div>
-        <div>
-          <b>Total</b> {total}
-        </div>
-        <div>
-          <p>
-            <b>Positive</b> {total !== 0 ? positive : "No numbers to calculate"}{" "}
-            %
-          </p>
-        </div>
-        <div>
-          <p>
-            <b>Average</b> {average}
-          </p>
-        </div>
+        <table>
+          <StatisticsLine text="Good" value={good} />
+          <StatisticsLine text="Neutral" value={neutral} />
+          <StatisticsLine text="Bad" value={bad} />
+          <StatisticsLine text="Average" value={average} />
+
+          <StatisticsLine
+            text="Positive"
+            value={total !== 0 ? positive : "No numbers to calculate"}
+          />
+        </table>
       </div>
     );
   }
