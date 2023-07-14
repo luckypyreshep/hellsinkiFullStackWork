@@ -6,32 +6,37 @@ const Statistics = ({ good, bad, neutral }) => {
   const positive = (good / total) * 100;
   const average = total / 3;
 
-  return (
-    <div>
+  if (total === 0) {
+    return <h3>No feedback given</h3>;
+  } else {
+    return (
       <div>
-        <b>good</b> {good}
+        <div>
+          <b>good</b> {good}
+        </div>
+        <div>
+          <b>neutral</b> {neutral}
+        </div>
+        <div>
+          <b>bad</b> {bad}
+        </div>
+        <div>
+          <b>Total</b> {total}
+        </div>
+        <div>
+          <p>
+            <b>Positive</b> {total !== 0 ? positive : "No numbers to calculate"}{" "}
+            %
+          </p>
+        </div>
+        <div>
+          <p>
+            <b>Average</b> {average}
+          </p>
+        </div>
       </div>
-      <div>
-        <b>neutral</b> {neutral}
-      </div>
-      <div>
-        <b>bad</b> {bad}
-      </div>
-      <div>
-        <b>Total</b> {total}
-      </div>
-      <div>
-        <p>
-          <b>Positive</b> {total !== 0 ? positive : "No numbers to calculate"} %
-        </p>
-      </div>
-      <div>
-        <p>
-          <b>Average</b> {average}
-        </p>
-      </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Statistics;
