@@ -24,11 +24,19 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(defaultVotes);
+  const [highestVoted, setHighestVoted] = useState("No votes yet");
 
   const voteForAnecdote = () => {
     let newVotesDict = { ...votes };
     newVotesDict[selected] = newVotesDict[selected] + 1;
     setVotes(newVotesDict);
+
+    const highestVoted = Object.keys(votes).reduce((a, b) =>
+      votes[a] > votes[b] ? a : b
+    );
+
+    setHighestVoted(highestVoted);
+    console.log(highestVoted);
   };
 
   const generateAnecdote = () => {
@@ -37,16 +45,33 @@ const App = () => {
     setSelected(randomInteger);
   };
 
+  const mostVotesAnecdote = () => {
+    const highestVoted = Object.keys(votes).reduce((a, b) =>
+      votes[a] > votes[b] ? a : b
+    );
+    console.log(highestVoted);
+
+    if (anecdotes[highestVoted] == 0) {
+      return "No votes given for any anecdotes";
+    } else {
+      return anecdotes[highestVoted];
+    }
+  };
+  console.log(votes);
   return (
     <div className="container">
       <div className="anecdotes">{anecdotes[selected]}</div>
       <div className="buttonMenu">
         <div>
           <div className="votes">has {votes[selected]} votes</div>
-
           <Button text="Vote" handleClick={voteForAnecdote} />
           <Button text="generate an anecdote" handleClick={generateAnecdote} />
         </div>
+      </div>
+      <div className="highestVoted">
+        <div>Anecdotes with most votes</div>
+        <div>{anecdotes[highestVoted]}</div>
+        <div>has {votes[selected]} votes</div>
       </div>
     </div>
   );

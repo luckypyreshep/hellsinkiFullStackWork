@@ -12,8 +12,8 @@
     word-wrap: normal;
   }
   
-  .votes {
-
+  .highestVoted {
+    margin-top: 10px; /* Adjust to your desired spacing */
   }
 
   .buttonMenu {
