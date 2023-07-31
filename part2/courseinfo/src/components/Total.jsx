@@ -1,13 +1,15 @@
 const Total = (props) => {
-  const { parts } = props;
+  const { courseParts } = props;
 
-  const total_exercises = parts.reduce((acc, currentPart) => {
-    return acc + currentPart.exercises;
+  const total_exercises = courseParts.reduce((sum, coursePart) => {
+    return sum + coursePart.exercises;
   }, 0);
 
   return (
     <div>
-      <p>Number of exercises {total_exercises}</p>
+      <p>
+        <b>Number of exercises {total_exercises}</b>
+      </p>
     </div>
   );
 };

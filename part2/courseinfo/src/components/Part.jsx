@@ -1,12 +1,10 @@
 const Part = (props) => {
-  const { part, exercises } = props;
+  const { id, name, exercises } = props;
 
   return (
-    <>
-      <div>
-        {part} {exercises}
-      </div>
-    </>
+    <div>
+      {name} {exercises}
+    </div>
   );
 };
 

@@ -1,33 +1,35 @@
 import Header from "./components/Header";
 import Content from "./components/Content";
 import Total from "./components/Total";
+import Course from "./components/Course";
 
 const App = () => {
-  const course = "Half Stack application development";
-
-  const parts = [
+  const title = "Web Development Curriculum";
+  const courses = [
     {
-      part: "Fundamentals of React",
-      exercises: 10,
-      id: self.crypto.randomUUID(),
+      name: "Half Stack application development",
+      id: 1,
+      parts: [
+        { name: "Fundamentals of React", exercises: 10, id: 1 },
+        { name: "Using props to pass data", exercises: 7, id: 2 },
+        { name: "State of a component", exercises: 14, id: 3 },
+        { name: "Redux", exercises: 11, id: 4 },
+      ],
     },
     {
-      part: "Using props to pass data",
-      exercises: 7,
-      id: self.crypto.randomUUID(),
-    },
-    {
-      part: "State of a component",
-      exercises: 14,
-      id: self.crypto.randomUUID(),
+      name: "Node.js",
+      id: 2,
+      parts: [
+        { name: "Routing", exercises: 3, id: 1 },
+        { name: "Middlewares", exercises: 7, id: 2 },
+      ],
     },
   ];
 
   return (
     <div>
-      <Header course={course} />
-      <Content parts={parts} />
-      <Total parts={parts} />
+      <Header title={title} />
+      <Course courses={courses} />
     </div>
   );
 };
