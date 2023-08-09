@@ -1,6 +1,8 @@
 .container {
     display: flex;
     flex-direction: column;
+    max-width: 50%;
+    margin: 0 auto;
     align-items: center;
     justify-content: center;
     height: 100vh; /* Adjust to your desired height */
@@ -8,7 +10,7 @@
   
   .anecdotes {
     min-width: 400px;
-    max-width: 500px; /* Adjust to your desired minimum width */
+    max-width: 400px; /* Adjust to your desired minimum width */
     word-wrap: normal;
   }
   

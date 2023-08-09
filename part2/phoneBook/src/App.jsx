@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 import DisplayPersons from "./components/DisplayPersons";
-
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-123456", id: 1 },
@@ -23,16 +24,13 @@ const App = () => {
 
   const updateSearch = (event) => {
     const value = event.target.value;
-
-    console.log(value);
-
     if (value !== "") {
       const searchResults = persons.filter((person) =>
-        person.name.includes(value)
+        person.name.toLowerCase().includes(value.toLowerCase())
       );
       setSearchResults(searchResults);
     } else {
-      setSearchResults(null);
+      setSearchResults([]);
     }
   };
 
@@ -53,27 +51,19 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input onChange={(e) => updateSearch(e)} />
-      </div>
-      <form onSubmit={alreadyExists}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter updateSearch={updateSearch} />
+      <PersonForm
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+        alreadyExists={alreadyExists}
+        newName={newName}
+        newNumber={newNumber}
+      />
       <h2>Numbers</h2>
-      {searchResults !== null
-        ? searchResults.map((result) => (
-            <div key={result.name}>{result.name}</div>
-          ))
-        : ""}
-      <DisplayPersons persons={persons} />
+
+      <DisplayPersons
+        persons={searchResults.length > 0 ? searchResults : persons}
+      />
     </div>
   );
 };
