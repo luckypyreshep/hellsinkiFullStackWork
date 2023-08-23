@@ -1,18 +1,24 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import DisplayPersons from "./components/DisplayPersons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
+import peopleService from "./services/people";
+
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
+  const [refreshData, setRefreshData] = useState(true); // State to trigger data refresh
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    if (refreshData) {
+      peopleService.getAll().then((response) => {
+        setPersons(response.data);
+      });
+      setRefreshData(false);
+    }
+  }, [refreshData]);
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -34,18 +40,34 @@ const App = () => {
     }
   };
 
+  // Adds new contact info if doesn't already exist
   const alreadyExists = (e) => {
     e.preventDefault();
     const found = persons.find((person) => newName === person.name);
     if (found !== undefined) {
-      alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${found.name} is already in this phonebook, replace their old number with the new one?`
+        )
+      ) {
+        peopleService.editNumber(found, newNumber);
+        setRefreshData(true);
+      }
     } else {
-      const newPersons = [...persons];
-      newPersons.push({ name: newName, number: newNumber });
-      setPersons(newPersons);
+      peopleService.addPerson({ name: newName, number: newNumber }).then(() => {
+        setRefreshData(true);
+      });
     }
     setNewName("");
     setNewNumber("");
+  };
+
+  const deleteHandler = (person) => {
+    if (window.confirm(`Do you really want to delete ${person.name}?`)) {
+      peopleService.deletePerson(person).then(() => {
+        setRefreshData(true);
+      });
+    }
   };
 
   return (
@@ -62,6 +84,7 @@ const App = () => {
       <h2>Numbers</h2>
 
       <DisplayPersons
+        deletePerson={deleteHandler}
         persons={searchResults.length > 0 ? searchResults : persons}
       />
     </div>
