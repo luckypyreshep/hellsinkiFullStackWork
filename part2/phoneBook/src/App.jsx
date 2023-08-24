@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./index.css";
 import DisplayPersons from "./components/DisplayPersons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
