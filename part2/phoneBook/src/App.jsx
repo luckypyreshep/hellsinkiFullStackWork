@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import "./index.css";
 import DisplayPersons from "./components/DisplayPersons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import peopleService from "./services/people";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,6 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   useEffect(() => {
     if (refreshData) {
@@ -54,9 +57,17 @@ const App = () => {
         setRefreshData(true);
       }
     } else {
-      peopleService.addPerson({ name: newName, number: newNumber }).then(() => {
-        setRefreshData(true);
-      });
+      peopleService
+        .addPerson({ name: newName, number: newNumber })
+        .then(() => {
+          setRefreshData(true);
+        })
+        .then(() => {
+          setNotificationMessage(`${newName} was succcessfully added`);
+          setTimeout(() => {
+            setNotificationMessage("");
+          }, 5000);
+        });
     }
     setNewName("");
     setNewNumber("");
@@ -81,6 +92,12 @@ const App = () => {
         newName={newName}
         newNumber={newNumber}
       />
+      {notificationMessage !== "" ? (
+        <Notification
+          notificationMessage={notificationMessage}
+          notifyType="positive"
+        />
+      ) : null}
       <h2>Numbers</h2>
 
       <DisplayPersons
