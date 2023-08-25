@@ -11,7 +11,7 @@ const Notification = ({ notificationMessage, notifyType }) => {
     fontSize: 16,
   };
   return (
-    <div style={notifyType == "positive" ? positiveStyle : negativeStyle}>
+    <div style={notifyType === true ? positiveStyle : negativeStyle}>
       {notificationMessage}
     </div>
   );

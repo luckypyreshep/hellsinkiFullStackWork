@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [notifyType, setNotifyType] = useState(true);
 
   useEffect(() => {
     if (refreshData) {
@@ -62,6 +63,7 @@ const App = () => {
           setRefreshData(true);
         })
         .then(() => {
+          setNotifyType(true);
           setNotificationMessage(`${newName} was succcessfully added`);
           setTimeout(() => {
             setNotificationMessage("");
@@ -74,9 +76,20 @@ const App = () => {
 
   const deleteHandler = (person) => {
     if (window.confirm(`Do you really want to delete ${person.name}?`)) {
-      peopleService.deletePerson(person).then(() => {
-        setRefreshData(true);
-      });
+      peopleService
+        .deletePerson(person)
+        .then(() => {
+          setRefreshData(true);
+        })
+        .catch((error) => {
+          setNotificationMessage(`${person.name} was already removed`);
+          setNotifyType(false);
+          setTimeout(() => {
+            setNotificationMessage("");
+            setNotifyType(false);
+            setRefreshData(true);
+          }, 3000);
+        });
     }
   };
 
@@ -94,7 +107,7 @@ const App = () => {
       {notificationMessage !== "" ? (
         <Notification
           notificationMessage={notificationMessage}
-          notifyType="positive"
+          notifyType={notifyType}
         />
       ) : null}
       <h2>Numbers</h2>
