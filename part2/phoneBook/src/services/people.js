@@ -7,7 +7,6 @@ const getAll = () => {
 };
 
 const addPerson = (newPerson) => {
-  console.log(newPerson);
   return axios.post(baseUrl, newPerson);
 };
 
